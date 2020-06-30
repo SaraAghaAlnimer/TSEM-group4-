@@ -1,19 +1,29 @@
 const fs = require('fs');
 const express = require('express');
 const  app = express();
+const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+
+// mongoose.connect('mongodb://localhost:3000/moody', {useNewUrlParser: true});
+
+const userRoutes = require('./routes/user.js');
 
 var musicData =  fs.readFileSync('public/music.json');
 var music = JSON.parse(musicData);
 
-app.listen(3000, () => console.log("my server is litening at port 3000"));
+app.listen(3000, () => console.log("Hi Sara! The server is litening at the port 3000. Enjoy your time! :)"));
 app.use(express.static('public')); //server is serving up any file in public folder (static content)
+
+
+//  Routes which should handel requests
+app.use('/user', userRoutes);
+
 
 
 app.get('/categories', sendCategories)// route to show json data
 function sendCategories(req, res) {
  res.send(music); 
 }
-
 
 app.get('/search/:mood/:song', addSong) //routes as parameters to add songs to file
 function addSong(req, res) {
