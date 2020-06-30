@@ -1,0 +1,25 @@
+const fs = require('fs');
+const express = require('express');
+const { response } = require('express');
+const  app = express();
+
+app.listen(3000, () => console.log("my server is litening at port 3000"));
+app.use(express.static('public')); //server is serving up any file in public folder (static content)
+
+
+var music = fs.readFileSync('public/music.json');
+var data =  JSON.parse(music)
+console.log(JSON.parse(music));
+
+
+
+app.get('/serch/:genre/:type', function data (req, res){
+
+  var wordss = music[req.params.genre] = req.params.type
+ var data = JSON.stringify(data, null, 3)
+  fs.writeFile('public/music.json', data, function(err){
+    console.log("done!")
+    console.log(data)
+  } )
+    res.send('music added')
+})
